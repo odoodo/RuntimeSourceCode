@@ -4,7 +4,7 @@ Extracts the source code of a deployed channel component from the script cache o
 This code template provides the source code with all attached code templates and internal logic that is added by Mirth. This can be used to understand the internal working, gain an overview of the complete transformer code and of course for debugging. Line numbers are identical to the ones indicated by mirth in case of an exception.
 
 **How to use:**<br/>
-simply import the code template attached below and call it in a transformer step.
+simply import the code template and call it in a code block.
 To get the source code of the current component:
 ```js
 var sourceCode = getSourceCode();
