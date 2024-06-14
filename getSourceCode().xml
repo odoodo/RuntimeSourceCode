@@ -1,0 +1,55 @@
+<codeTemplate version="3.7.1">
+  <id>d82823e2-ac6d-403e-9db6-296ac701b15b</id>
+  <name>getSourceCode()</name>
+  <revision>10</revision>
+  <lastModified>
+    <time>1718367638318</time>
+    <timezone>Europe/Berlin</timezone>
+  </lastModified>
+  <contextSet>
+    <delegate>
+      <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
+      <contextType>SOURCE_RECEIVER</contextType>
+      <contextType>DESTINATION_FILTER_TRANSFORMER</contextType>
+      <contextType>DESTINATION_RESPONSE_TRANSFORMER</contextType>
+      <contextType>DESTINATION_DISPATCHER</contextType>
+    </delegate>
+  </contextSet>
+  <properties class="com.mirth.connect.model.codetemplates.BasicCodeTemplateProperties">
+    <type>FUNCTION</type>
+    <code>/**
+  Provides the javascript code of the script from which it is called. It includes all attached code templates and internal code added by Mirth.
+  As data is directly obtained from the internal code cache of Mirth, line numbers correspond to the ones shown in exception messages.
+
+  @param {String} addLineNumbers - Flag that indicates if line numbers should be added to the source code
+  @return {String} return The javascript sourcecode
+*/
+
+function getSourceCode(addLineNumbers) {
+  
+  // no line numbers by default
+  if(addLineNumbers === undefined){
+    addLineNumbers = false;
+  }
+  
+  try{
+    // provoke Rhino-Exception
+    sourceRef.get(0);
+  }catch(exception){
+    // read script id from Rhino exception
+    var scriptId = exception.rhinoException.sourceName();
+  }
+  // get script from scriptcache
+  var sourceCode = com.mirth.connect.server.util.CompiledScriptCache.getInstance().getSourceScript(scriptId) + &apos;&apos;;
+  // add line numbers if desired
+  if(addLineNumbers){
+    var line = 2;
+    sourceCode = sourceCode.replace(/\n/gm, function(){return &apos;\n&apos;+(line++)+&apos;: &apos;;});
+    sourceCode = &apos;1: &apos; + sourceCode;
+  }
+  
+  return sourceCode;
+}
+</code>
+  </properties>
+</codeTemplate>
